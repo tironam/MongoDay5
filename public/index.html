@@ -9,7 +9,20 @@
 
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script>
-      
+
+      // If no user in localStorage, send back to authorization page
+       if (localStorage.getItem('user')) {
+          axios.get('/api/users/authorize', {
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('user')}`
+            }
+          })
+            .catch(err => {
+              window.location = '/auth.html'
+            })
+        } else {
+          window.location = '/auth.html'
+        }
   </script>
 </body>
 </html>
