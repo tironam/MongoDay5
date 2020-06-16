@@ -15,7 +15,7 @@
         </p>
         <p>
             <label for="newEmail">Email</label>
-            <input type="text" name="newEmail" id="newEmail">
+            <input type="email" name="newEmail" id="newEmail">
         </p>
         <p>
             <label for="newUsername">Username</label>
@@ -58,9 +58,9 @@
             })
                 .then(() => {
                     alert('Successfully registered! Please Sign in.')
-                    document.getElementById('newName').value = '',
-                    document.getElementById('newEmail').value = '',
-                    document.getElementById('newUsername').value = '',
+                    document.getElementById('newName').value = ''
+                    document.getElementById('newEmail').value = ''
+                    document.getElementById('newUsername').value = ''
                     document.getElementById('newPassword').value = ''
                 })
                 .catch(err => console.error(err))
@@ -79,7 +79,7 @@
                         window.location = '/index.html'
                     } else {
                         alert('Incorrect username or password!')
-                        document.getElementById('username').value = '',
+                        document.getElementById('username').value = ''
                         document.getElementById('password').value = ''
                     }
                 })

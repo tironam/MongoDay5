@@ -39,32 +39,32 @@
 
     // check postRoutes to see what the post requires
     document.getElementById('createPost').addEventListener('click', event => {
-      event.preventDefault()
-      axios.post('/api/posts', {
-        title: document.getElementById('title').value,
-        body: document.getElementById('body').value
-      }, {
-        headers: {
-          'Authorization': `Bears ${localStorage.getItem('users')}`
-        }
-      })
-        .then(({ dat }) => {
-          alert('Post successfully created!')
+        event.preventDefault()
+        axios.post('/api/posts', {
+          title: document.getElementById('title').value,
+          body: document.getElementById('body').value
+        }, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('user')}`
+          }
+        })
+          .then(({ data }) => {
+            alert('Post successfully created!')
 
-          let postElem = document.createElement('div')
-          postElem.innerHTML = `
+            let postElem = document.createElement('div')
+            postElem.innerHTML = `
                 <h3>${data.title}</h3>
                 <h5>Posted by: ${data.author.username}</h5>
                 <h6>${data.author.email}</h6>
                 <p>${data.body}</p>
                 <hr>
-          `
-          document.getElementById('posts').append(postElem)
-          document.getElementById('title').value = ''
-          document.getElementById('body').value = ''
-        })
+              `
+            document.getElementById('posts').append(postElem)
+            document.getElementById('title').value = ''
+            document.getElementById('body').value = ''
+          })
           .catch(err => console.error(err))
-    })
+      })
 
       // If no user in localStorage, send back to authorization page
        if (localStorage.getItem('user')) {
@@ -75,7 +75,7 @@
           })
           .then(({ data }) => {
             data.forEach(post => {
-              let postElem = document.creatElement('div')
+              let postElem = document.createElement('div')
               postElem.innerHTML = `
               <h3>${post.title}</h3>
               <h5>Posted by: ${post.author.username}</h5>
