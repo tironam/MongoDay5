@@ -7,15 +7,84 @@
 </head>
 <body>
 
+  <nav>
+    <a href="/index.html">Home Page</a>
+    <a href="/profile.html">Profile Page</a>
+    <button id="signOut">Sign Out</button>
+  </nav>
+
+  <form>
+    <p>
+      <label for="title">Title</label>
+      <input type="text" name="title" id="title">
+    </p>
+    <p>
+      <label for="body">Body</label>
+      <textarea name="body" id="body" cols="30" rows="10"></textarea>
+    </p>
+    <p>
+      <button id="createPost">Create Post</button>
+    </p>
+    <div id="posts"></div>
+  </form>
+
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script>
 
+     // To sign out
+      document.getElementById('signOut').addEventListener('click', event => {
+        localStorage.removeItem('user')
+        window.location = '/auth.html'
+      })
+
+    // check postRoutes to see what the post requires
+    document.getElementById('createPost').addEventListener('click', event => {
+      event.preventDefault()
+      axios.post('/api/posts', {
+        title: document.getElementById('title').value,
+        body: document.getElementById('body').value
+      }, {
+        headers: {
+          'Authorization': `Bears ${localStorage.getItem('users')}`
+        }
+      })
+        .then(({ dat }) => {
+          alert('Post successfully created!')
+
+          let postElem = document.createElement('div')
+          postElem.innerHTML = `
+                <h3>${data.title}</h3>
+                <h5>Posted by: ${data.author.username}</h5>
+                <h6>${data.author.email}</h6>
+                <p>${data.body}</p>
+                <hr>
+          `
+          document.getElementById('posts').append(postElem)
+          document.getElementById('title').value = ''
+          document.getElementById('body').value = ''
+        })
+          .catch(err => console.error(err))
+    })
+
       // If no user in localStorage, send back to authorization page
        if (localStorage.getItem('user')) {
-          axios.get('/api/users/authorize', {
+          axios.get('/api/posts', {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem('user')}`
             }
+          })
+          .then(({ data }) => {
+            data.forEach(post => {
+              let postElem = document.creatElement('div')
+              postElem.innerHTML = `
+              <h3>${post.title}</h3>
+              <h5>Posted by: ${post.author.username}</h5>
+              <h6>${post.author.email}</h6>
+              <p>${post.body}</p>
+              <hr>
+              `
+              document.getElementById('post').append(postElem)
+            })
           })
             .catch(err => {
               window.location = '/auth.html'
@@ -23,6 +92,8 @@
         } else {
           window.location = '/auth.html'
         }
+
   </script>
+
 </body>
 </html>
